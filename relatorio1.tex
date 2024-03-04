@@ -1,0 +1,210 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+
+\title{Relatório}
+\author{Marina Mantovani Meneghel}
+\date{February 2024}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+Na grande maioria dos fenômenos descritos por equações diferencias parciais (EDPs) não há formas analíticas ou explícitas de se 
+conseguir uma solução. Dessa forma, métodos numéricos são necessários para resolver esses problemas.
+
+O Método dos Elementos Finitos é uma poderosa ferramenta utilizada em diversas áreas das ciência computacional, para simulação de 
+fenômeos físicos e problemas de engenharia. O método consiste em dividir o domínio, processo conhecido como discretização, em número 
+finito decelementos menores (subdomínios), os quais estão conectados por nós, formando uma malha. Com isso, utilizando formulações 
+variacionais das equações governantes que descrevem o problema, constrói-se soluções aproximadas, através da contribuição dos elementos.
+
+Para isso, as equações governantes que descrevem o comportamento de cada elemento são assembladas em uma matriz global, o que permite 
+a construção de um sistema linear de equações que será resolvido em todo o domínio.
+
+Uma variação do método tradicional de Elementos Finitos é a aplicação de formulações mistas, onde a pressão e o fluxo são aproximados 
+simultanemamente. Essa abordagem é comumente utilizada para descrever a dinâmica dos fluidos. Nela, são consideradas funções pertencentes
+ao espaço de aproximação H(div), que fornece aproximações localmente conservativas. 
+
+A matriz resultante da aplicação desse método é do tipo ponto de sela, a qual é esparsa e não é positiva definida. Resolver sistemas
+lineares desse tipo é um problema desafiador, o qual exige técnicas especiais para sua resolução, uma vez que apenas a aplicação de 
+métodos tradicionais não são suficientes para a resolução desses problemas.
+
+Problemas que geram sistema de ponto de sela aparecem em uma variedade de aplicações técnicas e científicas, como na dinâmica dos fluidos, 
+otimização constrained, circutos elétricos e redes, least square estimation, mecânica das estruturas, elementos finitos mistos, até em áreas 
+da economia e de finanças.
+
+\section{Problem}
+
+O sistema linear em questão é representado da seguinte forma: 
+
+\begin{equation} \label{eq:system}
+    \begin{bmatrix}
+        A & B \\
+        C & D \\
+    \end{bmatrix}
+    \cdot
+    \begin{Bmatrix}
+        x \\
+        y \\
+    \end{Bmatrix}
+    =
+    \begin{Bmatrix}
+        f \\
+        g \\
+    \end{Bmatrix}
+\end{equation}
+
+sendo \(A, B, C\) e \(D\) blocos de matrizes que formam a matriz geral \(S\).
+
+Se o sistema descreve um problema de ponto de sela, apresentam um ou mais dos seguintes aspectos: 
+
+\begin{enumerate}
+  \item A é simétrica
+  \item a parte simétrica de A é positiva semidefinida
+  \item B = C 
+  \item D é simétrica e positivo semidefinido
+  \item C = 0 
+\end{enumerate}
+
+Um sistema de ponto de sela, originado de um problema incompressível como de Stokes, Elasticidade ou Darcy, é o caso em que todas 
+essas condições são satisfeitas, apresentando a forma abaixo:
+
+\begin{equation} \label{eq:system}
+    \begin{bmatrix}
+        A & B \\
+        B^T & 0 \\
+    \end{bmatrix}
+    \cdot
+    \begin{Bmatrix}
+        x \\
+        y \\
+    \end{Bmatrix}
+    =
+    \begin{Bmatrix}
+        f \\
+        g \\
+    \end{Bmatrix}
+\end{equation}
+
+Problemos no qual o bloco \(C\) é não nulo aparecem no contexto de método dos elementos finitos misto estabilizado, descretização de equações que descrvem fluidos com certa compressibilidade.
+Estamos buscando resolver o problema descrito na Eq. de forma iterativa, introduzindo uma pequena compressibilidade de modo a preencher a 
+diagonal nula, resultando na seguinte matriz positiva definida:
+
+
+
+Algoritmos de resolução de problemas ponto de sela, além de divisão clássica direta e iterativa, podem ser subdivididos em segregados e conjunto. Métodos segregados calculam as duas incógnitas vetores separadamente, resolvendo um sistema linear menor que o original, sistema reduzido. A principal representação dessa metodologia segregada é a redução pelo complemento de Schur.
+ 
+
+Método de Uzawa é bastante popular na mecanica dos fluidos 
+
+Sistema de ponto de sela é equivalente a resolver o problema de minimização 
+\begin{equation}
+    j(x)=(1/2)x^TAx-f^Tx
+    \label{eq:eq9}
+\end{equation}
+
+limitado a, condicionado por 
+
+\begin{equation}
+    Bx=g
+    \label{eq:eq9}
+\end{equation}
+
+Bloco \(A\) é positivo definido e \(C=0\)
+
+
+%Como a matriz \(A+B (\alpha{}I)^{-1} B^T\) é simétrica positiva definida, o problema é resolvido através da decomposição de Cholesky, para computar 
+%a solução inicial. A taxa de convergência aumenta, a medida que \alpha{} diminui. No entanto, o problema torna-se mal condicionado, o número de condicionamento da matriz \(A+B (\alpha{}I)^{-1} B^T\) aumenta com a diminuição de \(\alpha{}\), 
+%o que pode levar a problemas de acurácia da solução e de arredondamento.
+
+Sistema de ponto de sela regularizado permite encontrar uma solução inicial estável do problema alterado.
+
+A condensação estática é usada para eliminar os graus de liberdade internos de um elemento, reduzindo o número de graus de liberdade do sistema global. Consiste, basicamente, de um processo de eliminação de Gauss.
+Essa eliminação reduz o tamanho e a complexidade do sistema, o que pode ser útil para a resolução de sistemas lineares de grande porte.
+Se apresenta como um eficiente algoritmo numérico para a resolução de sistemas lineares esparsos, com a vantagem de que a matriz resultante é 
+simétrica e positiva definida, o que permite a aplicação de métodos diretos de resolução.
+
+
+
+\section{Methods}
+
+Os métodos diretos são responsáveis por fornecer a solução exata, dentro de um número finito de passos, sendo o problema resolvido através 
+da decomposição da matriz. Entre as técnicas mais conhecidas, estão a decomposição LU, \(LDL^T\), Cholesky e QR.
+
+Os métodos iterativos fazem uso de sucessivas aproximações, a partir de um chute inicial \(x_0\), para chegar a soluções de maior acurácia, ou seja, 
+que se aproximam mais da solução do sistema linear a cada passo (iteração), até atingir uma tolerância de parada estabelecidade. Portanto, não se obtém, 
+a partir desses métodos, a resposta exata, mas sim soluções muito próximas do sistema linear, ou seja, que o resíduo das equações se aproxime de zero. 
+Os algoritmos mais conhecidos são o Método de Jacobi, Gauss-Seidel, Gradiente Conjugado e GMRES.
+
+\section{Objectives}
+
+A resolução de sistemas lineares do tipo ponto de sela é um problema desafiador, o qual exige técnicas especiais. Portanto, o objetivo
+desta pesquisa é a análise da metodologia proposta de resolução de sistemas lineares de equações advindos do Método dos Elementos Finitos, 
+e comparação com outras formas de resolver esses problemas. Comparação das técnicas de decomposição direta e iterativa aplicadas a 
+problemas esparsos de ponto de sela, oriundo de aplicações do Método dos Elementos Finitos. 
+
+
+%biblioteca conta com diversas tecnologias no estado-da-arte do m etodo e a aluna irá utilizá-la para os testes deste projeto de pesquisa.
+%NeoPZ
+
+Para isso, serão implementados problemas modelos que gerem sistemas lineares representativos para análise e realização dos testes, fim de 
+analisar as metodologias de resolução desses sistemas. As matrizes serão geradas a partir de problemas de mecânica computacional 
+podendo variar parâmetro de penalização, a dimensão do problemas, ordem de aproximação, refinamento de malha. 
+
+Com essas matrizes, as diferentes metodologias de resolução serão testadas e dados significativos para as análises de performace serão coletados.
+Por fim, os dados obtidos serão comparados e conclusões sobre os métodos de resolução de sistema para problemas esparsos de ponto de sela serão 
+realizadas.
+
+\section{Activities}
+
+Inicialmente dedicou-se à ambientação e estudos das ideias principais do Método de Elementos Finitos. Em seguida, um estudo mais aprofundado em 
+métodos numéricos para resolução de sistemas lineares foi realizado. 
+
+A partir dos conhecimentos adquiridos, foram executados testes de resolução de sistemas lineares através da linguagem do Mathematica, a partir da 
+implementação simples de métodos diretos e iterativos mais usuais, como o Método de Eliminação de Gauss, Método de Jacobi e Gradiente Conjugado. 
+Com isso, é possível observar como se constrói um algoritmo de resolução e como as iterações se dão
+
+Paralelamente, foi necessário estudo da linguagem C++, com ênfase na programação orientada à objetos, com o objetivo de familiarização 
+com a biblioteca NeoPZ, desenvolvida no Laboratório de Mecânica Computacional para cálculos de Elementos Finitos para diversos problemas 
+da mecânica computacional. Para testar os conhecimentos, foi construído um programa de integração numérica de Gauss, com o intuito de 
+compreender a estrutura de um programa em C++ e a utilização de classes e métodos. 
+
+Para analisar as metodologias de resolução de sistemas, foi implementado um problema de Darcy, dado da seguinte forma:
+
+%escrever PDE Darcy
+
+foi gerando a matriz de rigidez. 
+
+Com o objetivo de avaliar a influência do parâmetro/averiguar o comportamente de penalização para o método iterativo, testes computacionais 
+variando o valor de \(\alpha\) e o número de divisões do elementos foram realizados, coletando dados como número de iterações, taxa de 
+convergência e tempo de execução.
+
+Sempre valores descendentes de \(\alpha\) para computar melhores aproximações de x, com menos iterações. %Em alguns casos a escolha de alpha leva em conta considerações físicas do problema (pesquisar isso).
+
+%Relação resíduo (log(resíduo)) x número de iterações, para diferentes valores de alpha
+O teste de convergência considera a diferença dos elementos do vetor. Quando a diferença é menor que a tolerância estabelecida, a solução é atingida 
+e o processamento é interrompido, considerada convergente.
+
+Um teste de convergência foi realizado, variando o valor de \(\alpha\), e analisando o número de iterações necessárias para a convergência do
+problema. O gráfico X mostra a relação entre o número de iterações necessárias para cada \(\alpha\) e a evolução do resíduo, com a norma do 
+resíduo em escala logarítimica, apresentando comportamento linear entre o número de iterações e o logarítimo da norma do vetor resíduo.
+
+
+%Relação entre resíduos 
+
+%Comparação Tempo de execução Iterative e Direct, x = divisões e y = tempo, plotando os diversos alphas
+O próximo experimento foi realizado para obter os tempos de execução do método iterativo condensado e direto. %Testar mais de uma vez? Da tempos diferentes!!!
+
+No método iterativo condensado, a partir do número de divisões igual a 15, o código divergiu para \(\alpha=0.1\). Além disso, para \(\alpha<=1.0e-7\) 
+houve divergência. Isso já era esperado para \(\alpha\) pequenos, uma vez que, a medida que alpha se aproxima de zero, a matriz torna-se cada vez 
+mais indefinida, o que impede de usar a fatoração de Cholesky como o solver direto para resolver o sistema linear. O mesmo não acontece quando a 
+matriz não é condensada, já que utiliza a decomposição LDLt, a qual não exige que a matriz seja positiva definida.
+
+Foi possível observar que, dos testes executados, o tempo de execução do método iterativo não foi menor que o do método direto. No entanto, há uma 
+tendência de que isso seja superado, a partir de um alpha.
+
+\section{Bibliography}
+
+\end{document}

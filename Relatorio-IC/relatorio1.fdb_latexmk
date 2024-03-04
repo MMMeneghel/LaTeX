@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1709130031.33182 "e:/Marina/Documents/LaTex/Relatorio-IC/relatorio1.tex" "relatorio1.pdf" "relatorio1" 1709130032.63012 2
+["pdflatex"] 1709407511.27206 "e:/Marina/Documents/LaTex/Relatorio-IC/relatorio1.tex" "relatorio1.pdf" "relatorio1" 1709407513.80764 0
   "c:/texlive/2023/texmf-dist/fonts/map/fontname/texfonts.map" 1708018325 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2023/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1708010315 1004 54797486969f23fa377b128694d548df ""
   "c:/texlive/2023/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1708010315 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -52,9 +52,9 @@
   "c:/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1708056255 5518052 de2a91c664d75f3971de4662dc6b5a65 ""
   "c:/texlive/2023/texmf-var/web2c/pdftex/pdflatex.fmt" 1708057171 8211098 394c3917323afec940546a9e77335ddb ""
   "c:/texlive/2023/texmf.cnf" 1708056214 713 e69b156964470283e0530f5060668171 ""
-  "e:/Marina/Documents/LaTex/Relatorio-IC/relatorio1.tex" 1709130027 11874 7c5b49d26ca0c17bf286b7ababda68b6 ""
-  "relatorio1.aux" 1709130032 757 4f647e83451d382e7e7a18af98d72776 "pdflatex"
-  "relatorio1.tex" 1709130027 11874 7c5b49d26ca0c17bf286b7ababda68b6 ""
+  "e:/Marina/Documents/LaTex/Relatorio-IC/relatorio1.tex" 1709407505 11949 a01390bd055f68544923ec8882774133 ""
+  "relatorio1.aux" 1709407513 757 4f647e83451d382e7e7a18af98d72776 "pdflatex"
+  "relatorio1.tex" 1709407505 11949 a01390bd055f68544923ec8882774133 ""
   (generated)
   "relatorio1.aux"
   "relatorio1.log"

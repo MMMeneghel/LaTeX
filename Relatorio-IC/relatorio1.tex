@@ -138,6 +138,13 @@ com menos iterações.
 
 Sistema de ponto de sela regularizado permite encontrar uma solução inicial estável do problema alterado.
 
+A condensação estática é usada para eliminar os graus de liberdade internos de um elemento, reduzindo o número de graus de liberdade do sistema global. Consiste, basicamente, de um processo de eliminação de Gauss.
+Essa eliminação reduz o tamanho e a complexidade do sistema, o que pode ser útil para a resolução de sistemas lineares de grande porte.
+Se apresenta como um eficiente algoritmo numérico para a resolução de sistemas lineares esparsos, com a vantagem de que a matriz resultante é 
+simétrica e positiva definida, o que permite a aplicação de métodos diretos de resolução.
+
+
+
 \section{Methods}
 
 Os métodos diretos são responsáveis por fornecer a solução exata, dentro de um número finito de passos, sendo o problema resolvido através da decomposição da matriz. 
@@ -172,50 +179,32 @@ Inicialmente dedicou-se à ambientação e estudos das ideias principais do Mét
 métodos numéricos para resolução de sistemas lineares foi realizado. 
 
 A partir dos conhecimentos adquiridos, foram executados testes de resolução de sistemas lineares através da linguagem do Mathematica, a partir da 
-implementação simples de métodos diretos e iterativos mais usuais, mas especificamente, Método de Jacobi, . Com isso, é possível observar como se constrói um algoritmo de resolução e como as iterações se dão
+implementação simples de métodos diretos e iterativos mais usuais, como o Método de Eliminação de Gauss, Método de Jacobi e Gradiente Conjugado. 
+Com isso, é possível observar como se constrói um algoritmo de resolução e como as iterações se dão
 
 Paralelamente, foi necessário estudo da linguagem C++, com ênfase na programação orientada à objetos, com o objetivo de familiarização 
 com a biblioteca NeoPZ, desenvolvida no Laboratório de Mecânica Computacional para cálculos de Elementos Finitos para diversos problemas 
-da mecânica computacional. 
+da mecânica computacional. Para testar os conhecimentos, foi construído um programa de integração numérica de Gauss, com o intuito de 
+compreender a estrutura de um programa em C++ e a utilização de classes e métodos. 
 
-Implementou-se um problema de Darcy, dado da seguinte forma:
+Para analisar as metodologias de resolução de sistemas, foi implementado um problema de Darcy, dado da seguinte forma:
 
 %escrever PDE Darcy
 
-foi gerando a matriz de rigidez, com o intuito de analisar as metodologias de resolu c ao de sistema. 
+foi gerando a matriz de rigidez. 
 
-O método implementado inicialmente não foi condensado. Foram testados diferentes valores de penalização, denominado \(\alpha\), com o 
-intuito de averiguar o comportamente.
-Avaliar a influência de penalização \(\alpha\) na convergência do problema, testes computacionais variando esse parâmetro.
+Com o objetivo de avaliar a influência do parâmetro/averiguar o comportamente de penalização para o método iterativo, testes computacionais 
+variando o valor de \(\alpha\) e o número de divisões do elementos foram realizados, coletando dados como número de iterações, taxa de 
+convergência e tempo de execução.
 
-- Tabela das situações consideradas
-- Tabela com os resultados obtidos
+No método iterativo condensado, a partir do número de divisões igual a 15, o código divergiu para \(\alpha=0.1\). Além disso, para \(\alpha<=1.0e-7\) 
+houve divergência. Isso já era esperado para \(\alpha\) pequenos, uma vez que, a medida que alpha se aproxima de zero, a matriz torna-se cada vez 
+mais indefinida, o que impede de usar a fatoração de Cholesky como o solver direto para resolver o sistema linear. O mesmo não acontece quando a 
+matriz não é condensada, já que utiliza a decomposição LDLt, a qual não exige que a matriz seja positiva definida.
 
-Um teste de convergência foi realizado, variando o valor de \(\alpha\), e analisando o número de iterações necessárias para a convergência do 
-problema. A relação
-entre o número de iterações necessárias para cada \(\alpha\) e o erro foi analisada, e, a fim de verificar a relação linear entre \(\alpha\) e o erro, foi feito um gráfico
-com escala logarítmica.
 
-- problema não condensado
-- variar alpha
-- testes de convergencia
-- relação linear entre alpha e erro
-- número de iterações
-- taxa de convergência 
-- big O notation
-- erro de arredondamento/limite do computador
-- tempo de execução 
-
-Depois, o mesmo teste foi foi para uma ordem polinomial maior do problema. 
-Em escala logarítimica, a inclinação da "reta" representa a taxa de convergência. Logo, quanto maior a inclinação, mais rápido a convergência do problema. 
-
-ao realizados experimentos num  ̃ ericos para avaliar as caracter  ́  ́ısticas de esta-
-bilidade e convergencia da formulac ̧ ˆ ao ̃
-
-Sempre valores descendentes de alpha para computar melhores aproximações de x, com menos iterações, classificado como metodo iterativo estacionário. Em alguns casos a escolha de alpha leva em conta considerações físicas do problema (pesquisar isso).
-
-O teste de convergência considera a diferença dos elementos do vetor x e x_aprox. Quando a diferença é menor que a tolerância estabelecida,
-a solução é atingida e o processamento é interrompido, considerada convergente. 
+Foi possível observar que, dos testes executados, o tempo de execução do método iterativo não foi menor que o do método direto. No entanto, há uma 
+tendência de que isso seja superado, a partir de um alpha.
 
 \section{Bibliography}
 
